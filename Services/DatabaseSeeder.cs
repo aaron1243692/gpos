@@ -1,6 +1,7 @@
 using gpos.Data;
 using gpos.Models;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 
 namespace gpos.Services
 {
@@ -53,6 +54,39 @@ namespace gpos.Services
 
             await context.SaveChangesAsync();
             logger.LogInformation("Created default admin user and assigned Admin role.");
+        }
+
+        public static async Task EnsureDefaultSalesmanEmployeeAsync(ApplicationDbContext context, ILogger logger)
+        {
+            await context.Database.ExecuteSqlRawAsync("""
+                CREATE TABLE IF NOT EXISTS employees (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(150) NOT NULL,
+                username VARCHAR(100) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                role VARCHAR(50) NOT NULL,
+                status VARCHAR(20) NOT NULL DEFAULT 'active',
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                );
+                """);
+
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword("salesman123");
+
+            await context.Database.ExecuteSqlRawAsync("""
+                INSERT INTO employees (name, username, password, role, status)
+                SELECT @name, @username, @password, @role, @status
+                WHERE NOT EXISTS (
+                    SELECT 1 FROM employees WHERE username = @username
+                );
+                """,
+                new MySqlParameter("@name", "Salesman"),
+                new MySqlParameter("@username", "salesman"),
+                new MySqlParameter("@password", hashedPassword),
+                new MySqlParameter("@role", "salesman"),
+                new MySqlParameter("@status", "active"));
+
+            logger.LogInformation("Ensured employees table and default salesman account.");
         }
     }
 }

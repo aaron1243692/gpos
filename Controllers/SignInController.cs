@@ -64,19 +64,17 @@ namespace gpos.Controllers
                     IsPersistent = model.RememberMe
                 });
 
-            return RedirectToRoleDashboard(result.RoleCode);
+            return RedirectToAction("Index", "Dashboard");
         }
 
-        private IActionResult RedirectToRoleDashboard(string role)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
         {
-            return role.Trim().ToLowerInvariant() switch
-            {
-                "admin" => RedirectToAction("Admin", "Dashboard"),
-                "manager" => RedirectToAction("Manager", "Dashboard"),
-                "cashier" => RedirectToAction("Cashier", "Dashboard"),
-                "inventory_staff" => RedirectToAction("Inventory", "Dashboard"),
-                _ => RedirectToAction("Dashboard", "Setup")
-            };
+            HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

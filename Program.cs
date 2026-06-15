@@ -31,6 +31,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddScoped<UserAuthService>();
+builder.Services.AddScoped<EmployeeAuthService>();
 
 builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme, options =>
 {
@@ -50,6 +51,7 @@ using (var scope = app.Services.CreateScope())
         var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         db.Database.Migrate();
         await DatabaseSeeder.SeedDefaultAdminAsync(db, logger);
+        await DatabaseSeeder.EnsureDefaultSalesmanEmployeeAsync(db, logger);
     }
     catch (Exception ex)
     {
@@ -76,7 +78,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=SignIn}/{action=Index}/{id?}")
+    pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 

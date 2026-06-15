@@ -8,7 +8,7 @@ namespace gpos.Controllers
     {
         public IActionResult Index()
         {
-            return RedirectToAction("Dashboard", "Setup");
+            return View();
         }
 
         public IActionResult Privacy()

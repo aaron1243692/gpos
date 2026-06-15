@@ -1,0 +1,131 @@
+@{
+    var currentController = (ViewContext.RouteData.Values["controller"]?.ToString() ?? string.Empty);
+    var currentAction = (ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty);
+
+    bool IsActive(string controller, string action) =>
+        string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase)
+        && string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase);
+
+    bool IsGroupActive(string controller) =>
+        string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GPOS</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/gpos.styles.css" asp-append-version="true" />
+</head>
+<body class="app-shell">
+    <nav class="mobile-topbar navbar navbar-dark d-lg-none">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" asp-controller="Setup" asp-action="Dashboard">GPOS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#appSidebar" aria-controls="appSidebar" aria-label="Open navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        <aside class="app-sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="appSidebar" aria-labelledby="appSidebarLabel">
+            <div class="sidebar-header">
+                <div>
+                    <a class="sidebar-brand" asp-controller="Setup" asp-action="Dashboard" id="appSidebarLabel">GPOS</a>
+                    <div class="sidebar-subtitle">Gas Station POS</div>
+                </div>
+                <button type="button" class="btn-close btn-close-white d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#appSidebar" aria-label="Close"></button>
+            </div>
+
+            <nav class="sidebar-nav accordion" id="sidebarMenu">
+                <div class="nav-group">
+                    <button class="nav-group-toggle @(IsGroupActive("Setup") ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#setupMenu" aria-expanded="@IsGroupActive("Setup").ToString().ToLowerInvariant()" aria-controls="setupMenu">
+                        <span>Setup</span><span class="chevron">›</span>
+                    </button>
+                    <div id="setupMenu" class="collapse @(IsGroupActive("Setup") ? "show" : "")" data-bs-parent="#sidebarMenu">
+                        <a class="sidebar-link @(IsActive("Setup", "Dashboard") ? "active" : "")" asp-controller="Setup" asp-action="Dashboard">Dashboard</a>
+                        <a class="sidebar-link @(IsActive("Setup", "Users") ? "active" : "")" asp-controller="Setup" asp-action="Users">Users</a>
+                        <a class="sidebar-link @(IsActive("Setup", "Customers") ? "active" : "")" asp-controller="Setup" asp-action="Customers">Customers</a>
+                        <a class="sidebar-link @(IsActive("Setup", "Categories") ? "active" : "")" asp-controller="Setup" asp-action="Categories">Categories</a>
+                        <a class="sidebar-link @(IsActive("Setup", "Products") ? "active" : "")" asp-controller="Setup" asp-action="Products">Products</a>
+                        <a class="sidebar-link @(IsActive("Setup", "FuelTypes") ? "active" : "")" asp-controller="Setup" asp-action="FuelTypes">Fuel Types</a>
+                        <a class="sidebar-link @(IsActive("Setup", "Pumps") ? "active" : "")" asp-controller="Setup" asp-action="Pumps">Pumps</a>
+                        <a class="sidebar-link @(IsActive("Setup", "Suppliers") ? "active" : "")" asp-controller="Setup" asp-action="Suppliers">Suppliers</a>
+                        <a class="sidebar-link @(IsActive("Setup", "Discounts") ? "active" : "")" asp-controller="Setup" asp-action="Discounts">Discounts</a>
+                        <a class="sidebar-link @(IsActive("Setup", "Settings") ? "active" : "")" asp-controller="Setup" asp-action="Settings">Settings</a>
+                    </div>
+                </div>
+
+                <div class="nav-group">
+                    <button class="nav-group-toggle @(IsGroupActive("Transaction") ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#transactionMenu" aria-expanded="@IsGroupActive("Transaction").ToString().ToLowerInvariant()" aria-controls="transactionMenu">
+                        <span>Transaction</span><span class="chevron">›</span>
+                    </button>
+                    <div id="transactionMenu" class="collapse @(IsGroupActive("Transaction") ? "show" : "")" data-bs-parent="#sidebarMenu">
+                        <a class="sidebar-link @(IsActive("Transaction", "DailyBeginningBalance") ? "active" : "")" asp-controller="Transaction" asp-action="DailyBeginningBalance">Daily Beginning Balance</a>
+                        <a class="sidebar-link @(IsActive("Transaction", "PumpTransaction") ? "active" : "")" asp-controller="Transaction" asp-action="PumpTransaction">Pump Transaction</a>
+                        <a class="sidebar-link @(IsActive("Transaction", "PosProductSales") ? "active" : "")" asp-controller="Transaction" asp-action="PosProductSales">POS Product Sales</a>
+                        <a class="sidebar-link @(IsActive("Transaction", "PointsRedemption") ? "active" : "")" asp-controller="Transaction" asp-action="PointsRedemption">Points Redemption</a>
+                        <a class="sidebar-link @(IsActive("Transaction", "DailyClosingBalance") ? "active" : "")" asp-controller="Transaction" asp-action="DailyClosingBalance">Daily Closing Balance</a>
+                        <a class="sidebar-link @(IsActive("Transaction", "ReceiptPreview") ? "active" : "")" asp-controller="Transaction" asp-action="ReceiptPreview">Receipt Preview</a>
+                    </div>
+                </div>
+
+                <div class="nav-group">
+                    <button class="nav-group-toggle @(IsGroupActive("Inventory") ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#inventoryMenu" aria-expanded="@IsGroupActive("Inventory").ToString().ToLowerInvariant()" aria-controls="inventoryMenu">
+                        <span>Inventory</span><span class="chevron">›</span>
+                    </button>
+                    <div id="inventoryMenu" class="collapse @(IsGroupActive("Inventory") ? "show" : "")" data-bs-parent="#sidebarMenu">
+                        <a class="sidebar-link @(IsActive("Inventory", "WarehouseInventory") ? "active" : "")" asp-controller="Inventory" asp-action="WarehouseInventory">Warehouse Inventory</a>
+                        <a class="sidebar-link @(IsActive("Inventory", "DisplayInventory") ? "active" : "")" asp-controller="Inventory" asp-action="DisplayInventory">Display Inventory</a>
+                        <a class="sidebar-link @(IsActive("Inventory", "StockReceiving") ? "active" : "")" asp-controller="Inventory" asp-action="StockReceiving">Stock Receiving</a>
+                        <a class="sidebar-link @(IsActive("Inventory", "StockTransfer") ? "active" : "")" asp-controller="Inventory" asp-action="StockTransfer">Stock Transfer</a>
+                        <a class="sidebar-link @(IsActive("Inventory", "StockAdjustment") ? "active" : "")" asp-controller="Inventory" asp-action="StockAdjustment">Stock Adjustment</a>
+                        <a class="sidebar-link @(IsActive("Inventory", "LowStockItems") ? "active" : "")" asp-controller="Inventory" asp-action="LowStockItems">Low Stock Items</a>
+                    </div>
+                </div>
+
+                <div class="nav-group">
+                    <button class="nav-group-toggle @(IsGroupActive("Reports") ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#reportsMenu" aria-expanded="@IsGroupActive("Reports").ToString().ToLowerInvariant()" aria-controls="reportsMenu">
+                        <span>Reports</span><span class="chevron">›</span>
+                    </button>
+                    <div id="reportsMenu" class="collapse @(IsGroupActive("Reports") ? "show" : "")" data-bs-parent="#sidebarMenu">
+                        <a class="sidebar-link @(IsActive("Reports", "DailySalesReport") ? "active" : "")" asp-controller="Reports" asp-action="DailySalesReport">Daily Sales Report</a>
+                        <a class="sidebar-link @(IsActive("Reports", "FuelSalesReport") ? "active" : "")" asp-controller="Reports" asp-action="FuelSalesReport">Fuel Sales Report</a>
+                        <a class="sidebar-link @(IsActive("Reports", "ProductSalesReport") ? "active" : "")" asp-controller="Reports" asp-action="ProductSalesReport">Product Sales Report</a>
+                        <a class="sidebar-link @(IsActive("Reports", "CashierSalesReport") ? "active" : "")" asp-controller="Reports" asp-action="CashierSalesReport">Cashier Sales Report</a>
+                        <a class="sidebar-link @(IsActive("Reports", "PaymentMethodReport") ? "active" : "")" asp-controller="Reports" asp-action="PaymentMethodReport">Payment Method Report</a>
+                        <a class="sidebar-link @(IsActive("Reports", "DiscountReport") ? "active" : "")" asp-controller="Reports" asp-action="DiscountReport">Discount Report</a>
+                        <a class="sidebar-link @(IsActive("Reports", "PointsReport") ? "active" : "")" asp-controller="Reports" asp-action="PointsReport">Points Report</a>
+                        <a class="sidebar-link @(IsActive("Reports", "WarehouseStockReport") ? "active" : "")" asp-controller="Reports" asp-action="WarehouseStockReport">Warehouse Stock Report</a>
+                        <a class="sidebar-link @(IsActive("Reports", "DisplayStockReport") ? "active" : "")" asp-controller="Reports" asp-action="DisplayStockReport">Display Stock Report</a>
+                        <a class="sidebar-link @(IsActive("Reports", "StockTransferReport") ? "active" : "")" asp-controller="Reports" asp-action="StockTransferReport">Stock Transfer Report</a>
+                        <a class="sidebar-link @(IsActive("Reports", "StockAdjustmentReport") ? "active" : "")" asp-controller="Reports" asp-action="StockAdjustmentReport">Stock Adjustment Report</a>
+                        <a class="sidebar-link @(IsActive("Reports", "BeginningEndingInventoryReport") ? "active" : "")" asp-controller="Reports" asp-action="BeginningEndingInventoryReport">Beginning and Ending Inventory Report</a>
+                    </div>
+                </div>
+
+                <div class="nav-group">
+                    <button class="nav-group-toggle @(IsGroupActive("Logs") ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#logsMenu" aria-expanded="@IsGroupActive("Logs").ToString().ToLowerInvariant()" aria-controls="logsMenu">
+                        <span>Logs</span><span class="chevron">›</span>
+                    </button>
+                    <div id="logsMenu" class="collapse @(IsGroupActive("Logs") ? "show" : "")" data-bs-parent="#sidebarMenu">
+                        <a class="sidebar-link @(IsActive("Logs", "ActivityLogs") ? "active" : "")" asp-controller="Logs" asp-action="ActivityLogs">Activity Logs</a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="app-main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,170 @@
+@{
+    var title = ViewData["Title"]?.ToString() ?? "Page";
+    var appSection = ViewData["Section"]?.ToString() ?? "GPOS";
+    var pageKind = ViewData["PageKind"]?.ToString() ?? "table";
+}
+
+<div class="page-header">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">GPOS</li>
+                <li class="breadcrumb-item">@appSection</li>
+                <li class="breadcrumb-item active" aria-current="page">@title</li>
+            </ol>
+        </nav>
+        <h1>@title</h1>
+    </div>
+    <span class="status-pill">Frontend scaffold</span>
+</div>
+
+@if (pageKind == "dashboard")
+{
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="metric-card">
+                <span>Fuel Sales</span>
+                <strong>0.00</strong>
+                <small>Placeholder total</small>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="metric-card">
+                <span>Product Sales</span>
+                <strong>0.00</strong>
+                <small>Placeholder total</small>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="metric-card">
+                <span>Inventory Alerts</span>
+                <strong>0</strong>
+                <small>Static preview</small>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <div class="metric-card">
+                <span>Transactions</span>
+                <strong>0</strong>
+                <small>Static preview</small>
+            </div>
+        </div>
+    </div>
+}
+
+@if (pageKind == "form" || pageKind == "transaction")
+{
+    <section class="content-card mb-4">
+        <div class="card-title-row">
+            <div>
+                <h2>Entry Form</h2>
+                <p>Static fields for layout preview only.</p>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm" type="button" disabled>Save later</button>
+        </div>
+        <form class="row g-3">
+            <div class="col-12 col-md-6 col-xl-4">
+                <label class="form-label">Reference No.</label>
+                <input class="form-control" type="text" placeholder="Auto-generated later" disabled />
+            </div>
+            <div class="col-12 col-md-6 col-xl-4">
+                <label class="form-label">Date</label>
+                <input class="form-control" type="date" disabled />
+            </div>
+            <div class="col-12 col-xl-4">
+                <label class="form-label">Status</label>
+                <select class="form-select" disabled>
+                    <option>Draft</option>
+                    <option>Posted</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" rows="3" placeholder="Remarks or instructions will go here." disabled></textarea>
+            </div>
+        </form>
+    </section>
+}
+
+@if (pageKind == "report")
+{
+    <section class="content-card mb-4">
+        <div class="card-title-row">
+            <div>
+                <h2>Report Filters</h2>
+                <p>Filter controls are placeholders for future report generation.</p>
+            </div>
+            <button class="btn btn-outline-primary btn-sm" type="button" disabled>Generate later</button>
+        </div>
+        <form class="row g-3">
+            <div class="col-12 col-md-4">
+                <label class="form-label">From</label>
+                <input class="form-control" type="date" disabled />
+            </div>
+            <div class="col-12 col-md-4">
+                <label class="form-label">To</label>
+                <input class="form-control" type="date" disabled />
+            </div>
+            <div class="col-12 col-md-4">
+                <label class="form-label">Branch / Station</label>
+                <select class="form-select" disabled>
+                    <option>Main Station</option>
+                </select>
+            </div>
+        </form>
+    </section>
+}
+
+@if (pageKind == "receipt")
+{
+    <section class="content-card mb-4 receipt-preview">
+        <h2>Receipt Preview</h2>
+        <div class="receipt-paper">
+            <strong>Gas Station POS</strong>
+            <span>Receipt layout placeholder</span>
+            <hr />
+            <div class="d-flex justify-content-between"><span>Fuel / Product</span><span>0.00</span></div>
+            <div class="d-flex justify-content-between"><span>Discount</span><span>0.00</span></div>
+            <div class="d-flex justify-content-between fw-bold"><span>Total</span><span>0.00</span></div>
+        </div>
+    </section>
+}
+
+<section class="content-card">
+    <div class="card-title-row">
+        <div>
+            <h2>@(pageKind == "log" ? "Activity Timeline" : pageKind == "report" ? "Report Preview" : "Table Preview")</h2>
+            <p>No database connection or saving logic is attached yet.</p>
+        </div>
+        <div class="table-actions">
+            <input class="form-control form-control-sm" type="search" placeholder="Search later" disabled />
+            <button class="btn btn-primary btn-sm" type="button" disabled>New later</button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Reference</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th class="text-end">Amount / Qty</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PREVIEW-001</td>
+                    <td>@title layout placeholder</td>
+                    <td><span class="badge text-bg-light">Static</span></td>
+                    <td class="text-end">0</td>
+                </tr>
+                <tr>
+                    <td>PREVIEW-002</td>
+                    <td>Future data will appear here</td>
+                    <td><span class="badge text-bg-light">Pending</span></td>
+                    <td class="text-end">0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

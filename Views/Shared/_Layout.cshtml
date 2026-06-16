@@ -12,8 +12,103 @@
         string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase)
         && string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase);
 
-    bool IsGroupActive(params string[] controllers) =>
-        controllers.Any(controller => string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase));
+    bool IsCurrentRoute(string controller, string action) => IsActive(controller, action);
+
+    var headerGroups = new[]
+    {
+        new
+        {
+            Name = "Setup",
+            Pages = new[]
+            {
+                new { Label = "Customers", Controller = "Setup", Action = "Customers" },
+                new { Label = "Suppliers", Controller = "Setup", Action = "Suppliers" },
+                new { Label = "Categories", Controller = "Setup", Action = "Categories" },
+                new { Label = "Item Units", Controller = "Setup", Action = "ItemUnits" },
+                new { Label = "Fuel Units", Controller = "Setup", Action = "FuelUnits" },
+                new { Label = "Fuel Types", Controller = "Setup", Action = "FuelTypes" },
+                new { Label = "Products", Controller = "Setup", Action = "Products" },
+                new { Label = "Pump Units", Controller = "Setup", Action = "PumpUnits" },
+                new { Label = "Pumps", Controller = "Setup", Action = "Pumps" },
+                new { Label = "Tanks", Controller = "Setup", Action = "FuelTanks" },
+                new { Label = "Fuel Prices", Controller = "Setup", Action = "FuelPriceHistory" },
+                new { Label = "Discounts", Controller = "Setup", Action = "Discounts" }
+            }
+        },
+        new
+        {
+            Name = "Transactions",
+            Pages = new[]
+            {
+                new { Label = "Open Shift", Controller = "Transaction", Action = "OpenShift" },
+                new { Label = "Beginning Balance", Controller = "Transaction", Action = "DailyBeginningBalance" },
+                new { Label = "POS", Controller = "Transaction", Action = "PosProductSales" },
+                new { Label = "Fuel Transactions", Controller = "Transaction", Action = "PumpTransaction" },
+                new { Label = "Product Sales", Controller = "Transaction", Action = "PosProductSales" },
+                new { Label = "Points Redemption", Controller = "Transaction", Action = "PointsRedemption" },
+                new { Label = "End Shift", Controller = "Transaction", Action = "DailyClosingBalance" },
+                new { Label = "Receipt Preview", Controller = "Transaction", Action = "ReceiptPreview" },
+                new { Label = "Payments", Controller = "Transaction", Action = "TransactionPayments" },
+                new { Label = "Cash Drawer", Controller = "Transaction", Action = "CashDrawerMovement" },
+                new { Label = "Cash Turnover", Controller = "Transaction", Action = "CashTurnover" },
+                new { Label = "Void", Controller = "Transaction", Action = "VoidTransactions" }
+            }
+        },
+        new
+        {
+            Name = "Reports",
+            Pages = new[]
+            {
+                new { Label = "Daily Sales", Controller = "Reports", Action = "DailySalesReport" },
+                new { Label = "Fuel Sales", Controller = "Reports", Action = "FuelSalesReport" },
+                new { Label = "Product Sales", Controller = "Reports", Action = "ProductSalesReport" },
+                new { Label = "Shift Sales", Controller = "Reports", Action = "ShiftSalesReport" },
+                new { Label = "Inventory", Controller = "Reports", Action = "InventoryReport" },
+                new { Label = "Points", Controller = "Reports", Action = "PointsReport" },
+                new { Label = "Cashier", Controller = "Reports", Action = "CashierSalesReport" },
+                new { Label = "Payments", Controller = "Reports", Action = "PaymentMethodReport" },
+                new { Label = "Discounts", Controller = "Reports", Action = "DiscountReport" },
+                new { Label = "Customers", Controller = "Reports", Action = "CustomerReport" },
+                new { Label = "Fuel Tanks", Controller = "Reports", Action = "FuelTankReport" },
+                new { Label = "Fuel Batches", Controller = "Reports", Action = "FuelBatchReport" },
+                new { Label = "Item Batches", Controller = "Reports", Action = "ItemBatchReport" },
+                new { Label = "Cash Difference", Controller = "Reports", Action = "CashDifferenceReport" },
+                new { Label = "Void Transactions", Controller = "Reports", Action = "VoidTransactionReport" }
+            }
+        },
+        new
+        {
+            Name = "Inventory",
+            Pages = new[]
+            {
+                new { Label = "Warehouse", Controller = "Inventory", Action = "WarehouseInventory" },
+                new { Label = "Display", Controller = "Inventory", Action = "DisplayInventory" },
+                new { Label = "Receiving", Controller = "Inventory", Action = "StockReceiving" },
+                new { Label = "Transfer", Controller = "Inventory", Action = "StockTransfer" },
+                new { Label = "Adjustment", Controller = "Inventory", Action = "StockAdjustment" },
+                new { Label = "Low Stock", Controller = "Inventory", Action = "LowStockItems" },
+                new { Label = "Item Batches", Controller = "Inventory", Action = "ItemBatches" },
+                new { Label = "Fuel Batches", Controller = "Inventory", Action = "FuelBatches" },
+                new { Label = "Fuel Delivery", Controller = "Inventory", Action = "FuelDelivery" },
+                new { Label = "Fuel Movement", Controller = "Inventory", Action = "FuelInventoryMovement" },
+                new { Label = "Item Movement", Controller = "Inventory", Action = "ItemInventoryMovement" }
+            }
+        },
+        new
+        {
+            Name = "Users",
+            Pages = new[]
+            {
+                new { Label = "Users", Controller = "Setup", Action = "Users" },
+                new { Label = "Profile", Controller = "Setup", Action = "Profile" },
+                new { Label = "Settings", Controller = "Setup", Action = "Settings" },
+                new { Label = "Activity Logs", Controller = "Logs", Action = "ActivityLogs" }
+            }
+        }
+    };
+
+    var activeHeaderGroup = headerGroups.FirstOrDefault(group => group.Pages.Any(page => IsCurrentRoute(page.Controller, page.Action)))
+        ?? headerGroups.First();
 
     string ModuleName(string? section, string controller)
     {
@@ -58,151 +153,63 @@
     <link rel="stylesheet" href="~/gpos.styles.css" asp-append-version="true" />
 </head>
 <body class="app-shell">
-    <nav class="mobile-topbar navbar navbar-dark d-lg-none">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold" asp-controller="Dashboard" asp-action="Index">GPOS</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#appSidebar" aria-controls="appSidebar" aria-label="Open navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-    </nav>
-
     <div class="app-layout">
-        <aside class="app-sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="appSidebar" aria-labelledby="appSidebarLabel">
-            <div class="sidebar-header">
-                <div class="brand-lockup">
-                    <span class="brand-mark" aria-hidden="true">G</span>
-                    <div>
-                        <a class="sidebar-brand" asp-controller="Dashboard" asp-action="Index" id="appSidebarLabel">GPOS</a>
-                        <div class="sidebar-subtitle">Gas Station POS</div>
-                    </div>
-                </div>
-                <button type="button" class="btn-close btn-close-white d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#appSidebar" aria-label="Close"></button>
-            </div>
-
-            <nav class="sidebar-nav accordion" id="sidebarMenu">
-                <div class="nav-group">
-                    <a class="nav-group-toggle text-decoration-none @(IsActive("Dashboard", "Index") ? "active" : "collapsed")" asp-controller="Dashboard" asp-action="Index">
-                        <span>Dashboard</span>
-                    </a>
-                </div>
-
-                <div class="nav-group">
-                    <button class="nav-group-toggle @(IsGroupActive("Setup") ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#setupMenu" aria-expanded="@IsGroupActive("Setup").ToString().ToLowerInvariant()">
-                        <span>Setup</span><span class="chevron"></span>
-                    </button>
-                    <div id="setupMenu" class="collapse @(IsGroupActive("Setup") ? "show" : "")" data-bs-parent="#sidebarMenu">
-                        <a class="sidebar-link @(IsActive("Setup", "Users") ? "active" : "")" asp-controller="Setup" asp-action="Users">Users</a>
-                        <a class="sidebar-link @(IsActive("Setup", "Customers") ? "active" : "")" asp-controller="Setup" asp-action="Customers">Customers</a>
-                        <a class="sidebar-link @(IsActive("Setup", "Suppliers") ? "active" : "")" asp-controller="Setup" asp-action="Suppliers">Suppliers</a>
-                        <a class="sidebar-link @(IsActive("Setup", "Categories") ? "active" : "")" asp-controller="Setup" asp-action="Categories">Categories</a>
-                        <a class="sidebar-link @(IsActive("Setup", "ItemUnits") ? "active" : "")" asp-controller="Setup" asp-action="ItemUnits">Item Units</a>
-                        <a class="sidebar-link @(IsActive("Setup", "FuelUnits") ? "active" : "")" asp-controller="Setup" asp-action="FuelUnits">Fuel Units</a>
-                        <a class="sidebar-link @(IsActive("Setup", "Products") ? "active" : "")" asp-controller="Setup" asp-action="Products">Products</a>
-                        <a class="sidebar-link @(IsActive("Setup", "FuelTypes") ? "active" : "")" asp-controller="Setup" asp-action="FuelTypes">Fuel Types</a>
-                        <a class="sidebar-link @(IsActive("Setup", "PumpUnits") ? "active" : "")" asp-controller="Setup" asp-action="PumpUnits">Pump Units</a>
-                        <a class="sidebar-link @(IsActive("Setup", "Pumps") ? "active" : "")" asp-controller="Setup" asp-action="Pumps">Pumps</a>
-                        <a class="sidebar-link @(IsActive("Setup", "FuelTanks") ? "active" : "")" asp-controller="Setup" asp-action="FuelTanks">Tanks</a>
-                        <a class="sidebar-link @(IsActive("Setup", "FuelPriceHistory") ? "active" : "")" asp-controller="Setup" asp-action="FuelPriceHistory">Fuel Price Settings</a>
-                        <a class="sidebar-link @(IsActive("Setup", "Discounts") ? "active" : "")" asp-controller="Setup" asp-action="Discounts">Discounts</a>
-                    </div>
-                </div>
-
-                <div class="nav-group">
-                    <button class="nav-group-toggle @(IsGroupActive("Transaction") ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#transactionMenu" aria-expanded="@IsGroupActive("Transaction").ToString().ToLowerInvariant()">
-                        <span>Transactions</span><span class="chevron"></span>
-                    </button>
-                    <div id="transactionMenu" class="collapse @(IsGroupActive("Transaction") ? "show" : "")" data-bs-parent="#sidebarMenu">
-                        <a class="sidebar-link @(IsActive("Transaction", "OpenShift") ? "active" : "")" asp-controller="Transaction" asp-action="OpenShift">Open Shift</a>
-                        <a class="sidebar-link @(IsActive("Transaction", "DailyBeginningBalance") ? "active" : "")" asp-controller="Transaction" asp-action="DailyBeginningBalance">Daily Beginning Balance</a>
-                        <a class="sidebar-link @(IsActive("Transaction", "PumpTransaction") ? "active" : "")" asp-controller="Transaction" asp-action="PumpTransaction">Pump Transaction</a>
-                        <a class="sidebar-link @(IsActive("Transaction", "PosProductSales") ? "active" : "")" asp-controller="Transaction" asp-action="PosProductSales">POS Product Sales</a>
-                        <a class="sidebar-link @(IsActive("Transaction", "PointsRedemption") ? "active" : "")" asp-controller="Transaction" asp-action="PointsRedemption">Points Redemption</a>
-                        <a class="sidebar-link @(IsActive("Transaction", "DailyClosingBalance") ? "active" : "")" asp-controller="Transaction" asp-action="DailyClosingBalance">Daily Closing Balance</a>
-                        <a class="sidebar-link @(IsActive("Transaction", "ReceiptPreview") ? "active" : "")" asp-controller="Transaction" asp-action="ReceiptPreview">Receipt Preview</a>
-                        <a class="sidebar-link @(IsActive("Transaction", "TransactionPayments") ? "active" : "")" asp-controller="Transaction" asp-action="TransactionPayments">Transaction Payments</a>
-                        <a class="sidebar-link @(IsActive("Transaction", "CashDrawerMovement") ? "active" : "")" asp-controller="Transaction" asp-action="CashDrawerMovement">Cash Drawer Movement</a>
-                        <a class="sidebar-link @(IsActive("Transaction", "CashTurnover") ? "active" : "")" asp-controller="Transaction" asp-action="CashTurnover">Cash Turnover</a>
-                        <a class="sidebar-link @(IsActive("Transaction", "VoidTransactions") ? "active" : "")" asp-controller="Transaction" asp-action="VoidTransactions">Void Transactions</a>
-                    </div>
-                </div>
-
-                <div class="nav-group">
-                    <button class="nav-group-toggle @(IsGroupActive("Inventory") ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#inventoryMenu" aria-expanded="@IsGroupActive("Inventory").ToString().ToLowerInvariant()">
-                        <span>Inventory</span><span class="chevron"></span>
-                    </button>
-                    <div id="inventoryMenu" class="collapse @(IsGroupActive("Inventory") ? "show" : "")" data-bs-parent="#sidebarMenu">
-                        <a class="sidebar-link @(IsActive("Inventory", "WarehouseInventory") ? "active" : "")" asp-controller="Inventory" asp-action="WarehouseInventory">Warehouse Inventory</a>
-                        <a class="sidebar-link @(IsActive("Inventory", "DisplayInventory") ? "active" : "")" asp-controller="Inventory" asp-action="DisplayInventory">Display / Sales Inventory</a>
-                        <a class="sidebar-link @(IsActive("Inventory", "StockTransfer") ? "active" : "")" asp-controller="Inventory" asp-action="StockTransfer">Stock Transfer</a>
-                        <a class="sidebar-link @(IsActive("Inventory", "StockAdjustment") ? "active" : "")" asp-controller="Inventory" asp-action="StockAdjustment">Stock Adjustment</a>
-                        <a class="sidebar-link @(IsActive("Inventory", "StockReceiving") ? "active" : "")" asp-controller="Inventory" asp-action="StockReceiving">Purchase / Receiving</a>
-                        <a class="sidebar-link @(IsActive("Inventory", "LowStockItems") ? "active" : "")" asp-controller="Inventory" asp-action="LowStockItems">Low Stock</a>
-                        <a class="sidebar-link @(IsActive("Inventory", "ItemBatches") ? "active" : "")" asp-controller="Inventory" asp-action="ItemBatches">Item Batches</a>
-                        <a class="sidebar-link @(IsActive("Inventory", "FuelBatches") ? "active" : "")" asp-controller="Inventory" asp-action="FuelBatches">Fuel Batches</a>
-                        <a class="sidebar-link @(IsActive("Inventory", "FuelDelivery") ? "active" : "")" asp-controller="Inventory" asp-action="FuelDelivery">Fuel Delivery</a>
-                        <a class="sidebar-link @(IsActive("Inventory", "FuelInventoryMovement") ? "active" : "")" asp-controller="Inventory" asp-action="FuelInventoryMovement">Fuel Inventory Movement</a>
-                        <a class="sidebar-link @(IsActive("Inventory", "ItemInventoryMovement") ? "active" : "")" asp-controller="Inventory" asp-action="ItemInventoryMovement">Item Inventory Movement</a>
-                    </div>
-                </div>
-
-                <div class="nav-group">
-                    <button class="nav-group-toggle @(IsGroupActive("Reports") ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#reportsMenu" aria-expanded="@IsGroupActive("Reports").ToString().ToLowerInvariant()">
-                        <span>Reports</span><span class="chevron"></span>
-                    </button>
-                    <div id="reportsMenu" class="collapse @(IsGroupActive("Reports") ? "show" : "")" data-bs-parent="#sidebarMenu">
-                        <a class="sidebar-link @(IsActive("Reports", "DailySalesReport") ? "active" : "")" asp-controller="Reports" asp-action="DailySalesReport">Sales Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "FuelSalesReport") ? "active" : "")" asp-controller="Reports" asp-action="FuelSalesReport">Fuel Sales Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "ProductSalesReport") ? "active" : "")" asp-controller="Reports" asp-action="ProductSalesReport">Product Sales Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "ShiftSalesReport") ? "active" : "")" asp-controller="Reports" asp-action="ShiftSalesReport">Shift Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "InventoryReport") ? "active" : "")" asp-controller="Reports" asp-action="InventoryReport">Inventory Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "PointsReport") ? "active" : "")" asp-controller="Reports" asp-action="PointsReport">Customer Points Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "CashierSalesReport") ? "active" : "")" asp-controller="Reports" asp-action="CashierSalesReport">Cashier Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "DiscountReport") ? "active" : "")" asp-controller="Reports" asp-action="DiscountReport">Discount Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "PaymentMethodReport") ? "active" : "")" asp-controller="Reports" asp-action="PaymentMethodReport">Payment Method Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "CustomerReport") ? "active" : "")" asp-controller="Reports" asp-action="CustomerReport">Customer Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "FuelTankReport") ? "active" : "")" asp-controller="Reports" asp-action="FuelTankReport">Fuel Tank Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "FuelBatchReport") ? "active" : "")" asp-controller="Reports" asp-action="FuelBatchReport">Fuel Batch Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "ItemBatchReport") ? "active" : "")" asp-controller="Reports" asp-action="ItemBatchReport">Item Batch Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "CashDifferenceReport") ? "active" : "")" asp-controller="Reports" asp-action="CashDifferenceReport">Cash Difference Report</a>
-                        <a class="sidebar-link @(IsActive("Reports", "VoidTransactionReport") ? "active" : "")" asp-controller="Reports" asp-action="VoidTransactionReport">Void Transaction Report</a>
-                    </div>
-                </div>
-
-                <div class="nav-group">
-                    <button class="nav-group-toggle @(IsGroupActive("Logs") || IsActive("Setup", "Settings") || IsActive("Setup", "Profile") ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#systemMenu" aria-expanded="@(IsGroupActive("Logs") || IsActive("Setup", "Settings") || IsActive("Setup", "Profile")).ToString().ToLowerInvariant()">
-                        <span>System</span><span class="chevron"></span>
-                    </button>
-                    <div id="systemMenu" class="collapse @(IsGroupActive("Logs") || IsActive("Setup", "Settings") || IsActive("Setup", "Profile") ? "show" : "")" data-bs-parent="#sidebarMenu">
-                        <a class="sidebar-link @(IsActive("Logs", "ActivityLogs") ? "active" : "")" asp-controller="Logs" asp-action="ActivityLogs">Activity Logs</a>
-                        <a class="sidebar-link @(IsActive("Setup", "Settings") ? "active" : "")" asp-controller="Setup" asp-action="Settings">Settings</a>
-                        <a class="sidebar-link @(IsActive("Setup", "Profile") ? "active" : "")" asp-controller="Setup" asp-action="Profile">Profile</a>
-                    </div>
-                </div>
-            </nav>
-        </aside>
-
         <main class="app-main">
-            <header class="top-navbar">
-                <nav class="top-location" aria-label="Current location">
-                    <span class="top-location-module">@module</span>
-                    @if (!string.Equals(module, title, StringComparison.OrdinalIgnoreCase))
-                    {
-                        <span class="top-location-separator" aria-hidden="true">/</span>
-                        <span class="top-location-page">@title</span>
-                    }
-                </nav>
-                <div class="top-user dropdown">
-                    <button class="profile-toggle dropdown-toggle" type="button" id="profileMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="profile-avatar" aria-hidden="true">@UserInitials(username)</span>
-                        <span class="profile-name">@username</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end profile-menu" aria-labelledby="profileMenuButton">
-                        <form asp-controller="SignIn" asp-action="Logout" method="post">
-                            @Html.AntiForgeryToken()
-                            <button class="dropdown-item profile-menu-item" type="submit">Logout</button>
-                        </form>
-                    </div>
+            <header class="eg-rb" data-gpos-ribbon aria-label="Primary navigation">
+                <div class="eg-rb-top">
+                    <a class="eg-rb-brand" asp-controller="Dashboard" asp-action="Index" aria-label="GPOS dashboard">
+                        <span class="eg-rb-brand-mark" aria-hidden="true">G</span>
+                        <span>GPOS / Gas Station POS</span>
+                    </a>
+
+                    <nav class="eg-rb-tabs" aria-label="Main page groups">
+                        @foreach (var group in headerGroups)
+                        {
+                            var landingPage = group.Pages.First();
+                            var isActiveGroup = string.Equals(activeHeaderGroup.Name, group.Name, StringComparison.OrdinalIgnoreCase);
+                            <a class="eg-rb-tab @(isActiveGroup ? "is-active" : "")"
+                               asp-controller="@landingPage.Controller"
+                               asp-action="@landingPage.Action">
+                                @group.Name
+                            </a>
+                        }
+                    </nav>
+
+                    <details class="eg-rb-user" id="gposUserDropdown">
+                        <summary class="eg-rb-userbtn" aria-controls="gposUserMenu">
+                            <span class="eg-rb-avatar" aria-hidden="true">@UserInitials(username)</span>
+                            <span class="eg-rb-userlabel">@username</span>
+                            <span class="eg-rb-usercaret" aria-hidden="true"></span>
+                        </summary>
+                        <div class="eg-rb-usermenu" id="gposUserMenu" role="menu">
+                            <div class="eg-rb-usercaption">Signed in as</div>
+                            <div class="eg-rb-username">@username</div>
+                            <form asp-controller="SignIn" asp-action="Logout" method="post">
+                                @Html.AntiForgeryToken()
+                                <button class="eg-rb-usermenu-link eg-rb-usermenu-link--danger" type="submit" role="menuitem">
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="eg-rb-ribbon">
+                    <section class="eg-rb-group">
+                        <div class="eg-rb-group-title">@activeHeaderGroup.Name</div>
+                        <nav class="eg-rb-items" aria-label="@activeHeaderGroup.Name pages">
+                            @foreach (var headerPage in activeHeaderGroup.Pages)
+                            {
+                                var isActivePage = IsCurrentRoute(headerPage.Controller, headerPage.Action);
+                                <a class="eg-rb-tile @(isActivePage ? "is-active" : "")"
+                                   asp-controller="@headerPage.Controller"
+                                   asp-action="@headerPage.Action">
+                                    <span class="eg-rb-icon" aria-hidden="true">@headerPage.Label.Substring(0, Math.Min(3, headerPage.Label.Length)).ToUpperInvariant()</span>
+                                    <span>@headerPage.Label</span>
+                                </a>
+                            }
+                        </nav>
+                    </section>
                 </div>
             </header>
             <div class="app-content">

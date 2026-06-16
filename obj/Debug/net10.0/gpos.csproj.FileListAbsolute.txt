@@ -119,7 +119,6 @@ C:\project\gpos\obj\Debug\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.c
 C:\project\gpos\obj\Debug\net10.0\scopedcss\bundle\gpos.styles.css
 C:\project\gpos\obj\Debug\net10.0\scopedcss\projectbundle\gpos.bundle.scp.css
 C:\project\gpos\obj\Debug\net10.0\compressed\m85hrzigfc-{0}-61n19gt1b8-61n19gt1b8.gz
-C:\project\gpos\obj\Debug\net10.0\compressed\klqrpk09b6-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 C:\project\gpos\obj\Debug\net10.0\compressed\uht1ckxk1i-{0}-bqjiyaj88i-bqjiyaj88i.gz
 C:\project\gpos\obj\Debug\net10.0\compressed\de8zftfscy-{0}-c2jlpeoesf-c2jlpeoesf.gz
 C:\project\gpos\obj\Debug\net10.0\compressed\ya87anivyi-{0}-erw9l3u2r3-erw9l3u2r3.gz
@@ -586,4 +585,5 @@ C:\project\gpos\.buildcheck\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHo
 C:\project\gpos\.buildcheck\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\project\gpos\.buildcheck\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\project\gpos\.buildcheck\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-C:\project\gpos\obj\Debug\net10.0\compressed\26ffcl311x-{0}-9szrv6slhs-9szrv6slhs.gz
+C:\project\gpos\obj\Debug\net10.0\compressed\26ffcl311x-{0}-lj077vc5gy-lj077vc5gy.gz
+C:\project\gpos\obj\Debug\net10.0\compressed\klqrpk09b6-{0}-zv5r6k8rer-zv5r6k8rer.gz

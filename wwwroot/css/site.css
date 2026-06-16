@@ -688,59 +688,90 @@ textarea:disabled {
 .eg-rb-ribbon {
   position: relative;
   z-index: 1;
-  min-height: 94px;
-  padding: 7px 8px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  min-height: 0;
+  padding: 8px 10px;
+  overflow-x: hidden;
+  overflow-y: visible;
   border-bottom: 1px solid rgba(15, 23, 42, 0.12);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.9), transparent 56%),
-    linear-gradient(180deg, #fff, #f4f5f7);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(15, 23, 42, 0.22) transparent;
+  background: #f8fafc;
 }
 
-.eg-rb-group {
-  position: relative;
-  min-width: max-content;
-  padding: 5px 17px;
+.eg-rb-pages-panel {
+  display: none;
+  max-width: 100%;
+  padding: 8px 10px;
+  border: 1px solid rgba(15, 23, 42, 0.28);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.eg-rb.is-open .eg-rb-pages-panel.is-active {
+  display: block;
+}
+
+.eg-rb-subgroups {
+  display: flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.eg-rb-page-card {
+  flex: 0 1 265px;
+  min-width: 210px;
+  max-width: 320px;
+  padding: 7px 8px;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.03);
 }
 
 .eg-rb-group-title {
-  margin: 0 0 7px;
-  color: #111827;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  line-height: 1.15;
+  margin: 0 0 8px;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.1;
   text-align: left;
   white-space: nowrap;
 }
 
+.eg-rb-subgroup-title {
+  margin: 0 0 6px;
+  color: #111827;
+  font-size: 0.84rem;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
 .eg-rb-items {
   display: flex;
-  align-items: stretch;
-  gap: 7px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
 }
 
 .eg-rb-tile {
   display: inline-flex;
-  min-width: 72px;
-  min-height: 57px;
-  flex-direction: column;
+  min-width: 5.8rem;
+  min-height: 30px;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 6px 8px;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  color: #172033;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.1;
+  padding: 0.28rem 0.62rem;
+  border: 1px solid #111827;
+  border-radius: 999px;
+  background: #fff;
+  color: #111827;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.15;
   text-align: center;
   text-decoration: none;
-  white-space: nowrap;
+  white-space: normal;
+  box-shadow: none;
   transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 
@@ -749,19 +780,24 @@ textarea:disabled {
 .eg-rb-tile:hover,
 .eg-rb-tile:focus,
 .eg-rb-tile:active {
-  color: #172033;
+  color: #111827;
   text-decoration: none;
 }
 
 .eg-rb-tile:hover,
 .eg-rb-tile.is-active {
-  border-color: rgba(71, 85, 105, 0.18);
-  background: linear-gradient(180deg, #fff, #eef1f5);
-  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08), inset 0 1px rgba(255, 255, 255, 0.7);
+  border-color: #0f172a;
+  background: #e8eef6;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.18);
 }
 
 .eg-rb-tile:hover {
   transform: translateY(-1px);
+}
+
+.eg-rb-tile span {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .eg-rb-icon {
@@ -2153,8 +2189,31 @@ textarea.form-control {
     padding-inline: 4px;
   }
 
-  .eg-rb-group {
-    padding-inline: 6px;
+  .eg-rb-pages-panel {
+    padding: 7px;
+  }
+
+  .eg-rb-subgroups {
+    gap: 7px;
+  }
+
+  .eg-rb-page-card {
+    flex: 1 1 100%;
+    min-width: 0;
+    max-width: none;
+    padding: 7px;
+    border-radius: 12px;
+  }
+
+  .eg-rb-items {
+    gap: 6px;
+  }
+
+  .eg-rb-tile {
+    flex: 1 1 7rem;
+    min-height: 34px;
+    padding-inline: 0.65rem;
+    font-size: 0.86rem;
   }
 }
 

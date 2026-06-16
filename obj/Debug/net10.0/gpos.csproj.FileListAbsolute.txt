@@ -585,5 +585,5 @@ C:\project\gpos\.buildcheck\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHo
 C:\project\gpos\.buildcheck\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\project\gpos\.buildcheck\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\project\gpos\.buildcheck\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
-C:\project\gpos\obj\Debug\net10.0\compressed\26ffcl311x-{0}-lj077vc5gy-lj077vc5gy.gz
-C:\project\gpos\obj\Debug\net10.0\compressed\klqrpk09b6-{0}-zv5r6k8rer-zv5r6k8rer.gz
+C:\project\gpos\obj\Debug\net10.0\compressed\26ffcl311x-{0}-lxvxy1qrue-lxvxy1qrue.gz
+C:\project\gpos\obj\Debug\net10.0\compressed\klqrpk09b6-{0}-y3pxobjlij-y3pxobjlij.gz
